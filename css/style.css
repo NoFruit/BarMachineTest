@@ -1,0 +1,1475 @@
+/* ============================================
+   废土风格 (Wasteland) — 全局样式
+   ============================================ */
+
+/* --- 重置与基础 --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #1a1612;
+    color: #d4c8a8;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    user-select: none;
+}
+
+/* 滚动条全局隐藏 */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- 背景纹理 --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+    background-image:
+        radial-gradient(circle at 20% 30%, #8b6914 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, #6b4423 0%, transparent 35%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 3px);
+}
+
+/* --- 容器 --- */
+#game-container {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+}
+
+/* --- 主内容区（三列） --- */
+#main-area {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    flex: 1;
+}
+
+/* --- 通用版面样式 --- */
+.panel {
+    position: relative;
+    background-color: #252019;
+    border: 2px solid #6b4423;
+    border-radius: 4px;
+    padding: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border-radius: 2px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.panel:hover {
+    border-color: #8b6914;
+    box-shadow: 0 0 8px rgba(139,105,20,0.2), inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* 版面标题栏 */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #6b4423;
+    font-family: 'Impact', 'Arial Black', 'SimHei', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #b8860b;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.panel-header::before {
+    content: '▪';
+    margin-right: 8px;
+    color: #8b4513;
+}
+
+/* 版面内容区 */
+.panel-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- 底部日志版面 --- */
+#panel-footer {
+    width: 100%;
+    flex-shrink: 0;
+    height: 160px;
+    padding: 8px 12px;
+}
+
+/* ============================================
+   LogPanel — 日志面板样式
+   ============================================ */
+
+.log-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-panel-inner {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.log-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 2px 4px;
+    font-size: 12px;
+    line-height: 18px;
+    animation: logFadeIn 0.15s ease-out;
+}
+
+.log-line:nth-child(even) {
+    background-color: rgba(107, 68, 35, 0.08);
+}
+
+.log-time {
+    color: #6b6048;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.log-text {
+    color: #c8b898;
+}
+
+@keyframes logFadeIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================
+   InventoryPanel — 背包格子样式
+   ============================================ */
+
+.inventory-panel {
+    width: 100%;
+    height: 100%;
+}
+
+.inventory-grid {
+    display: grid;
+    justify-content: center;
+    align-content: start;
+}
+
+.inv-cell {
+    position: relative;
+    background-color: #1e1a14;
+    border: 1px solid #3e3428;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+    overflow: hidden;
+}
+
+.inv-cell.empty {
+    background-color: rgba(30, 26, 20, 0.5);
+    border-style: dashed;
+    border-color: #2e2820;
+}
+
+.inv-cell.empty:hover {
+    border-color: #4a3e2e;
+    background-color: rgba(30, 26, 20, 0.8);
+}
+
+.inv-cell.occupied {
+    border-color: #5a4a30;
+}
+
+.inv-cell.occupied:hover {
+    border-color: #8b6914;
+    background-color: #2a2418;
+    box-shadow: inset 0 0 6px rgba(139,105,20,0.15);
+}
+
+.inv-cell.occupied:active {
+    transform: scale(0.96);
+}
+
+.inv-cell-icon {
+    width: 70%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a1612;
+    border-radius: 2px;
+    text-shadow: none;
+}
+
+.inv-cell-qty {
+    position: absolute;
+    bottom: 1px;
+    right: 3px;
+    font-size: 10px;
+    color: #d4c8a8;
+    font-weight: bold;
+    text-shadow: 0 1px 2px #000;
+}
+
+/* ============================================
+   MachinePanel — 机器面板样式
+   ============================================ */
+
+.machine-panel {
+    width: 100%;
+    height: 100%;
+}
+
+.machine-header {
+    justify-content: center;
+    gap: 16px;
+}
+
+.machine-title {
+    min-width: 120px;
+    text-align: center;
+}
+
+.machine-nav-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2b2218;
+    border: 2px solid #6b4423;
+    border-radius: 3px;
+    color: #a09070;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.machine-nav-btn:hover {
+    border-color: #b8860b;
+    color: #f0e6c8;
+    background-color: #3a3020;
+}
+
+.machine-nav-btn:active {
+    transform: translateY(1px);
+}
+
+.machine-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- 废土风格按钮 --- */
+.btn-wasteland {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    background-color: #2b2218;
+    border: 2px solid #6b4423;
+    border-radius: 3px;
+    color: #d4c8a8;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.btn-wasteland::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(184,134,11,0.1), transparent);
+    transition: left 0.3s;
+}
+
+.btn-wasteland:hover {
+    border-color: #b8860b;
+    color: #f0e6c8;
+    box-shadow: 0 0 6px rgba(184,134,11,0.3);
+}
+
+.btn-wasteland:hover::before {
+    left: 100%;
+}
+
+.btn-wasteland:active {
+    transform: translateY(1px);
+    background-color: #1a1612;
+}
+
+/* --- 二级菜单覆盖层 --- */
+.submenu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(13,11,8,0.85);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.submenu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.submenu-panel {
+    position: relative;
+    width: 60vw;
+    height: 70vh;
+    background-color: #252019;
+    border: 3px solid #6b4423;
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+        0 0 0 1px #1a1612,
+        0 0 30px rgba(0,0,0,0.8),
+        inset 0 0 40px rgba(0,0,0,0.4);
+    transform: scale(0.95);
+    transition: transform 0.3s;
+}
+
+.submenu-overlay.active .submenu-panel {
+    transform: scale(1);
+}
+
+.submenu-panel::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px dashed #6b4423;
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.submenu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #6b4423;
+}
+
+.submenu-title {
+    font-family: 'Impact', 'Arial Black', 'SimHei', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: #b8860b;
+    text-transform: uppercase;
+}
+
+.submenu-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2b2218;
+    border: 2px solid #6b4423;
+    border-radius: 3px;
+    color: #a09070;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submenu-close:hover {
+    border-color: #8b2500;
+    color: #cc3300;
+}
+
+.submenu-body {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- 状态指示灯 --- */
+.status-light {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #4a3;
+    box-shadow: 0 0 4px #4a3;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* --- 装饰角标 --- */
+.corner-deco {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #8b6914;
+    pointer-events: none;
+}
+
+.corner-deco.tl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+.corner-deco.tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+.corner-deco.bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+.corner-deco.br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+
+/* --- 扫描线效果 --- */
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(184,134,11,0.08);
+    z-index: 999;
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% { top: -2px; }
+    100% { top: 100vh; }
+}
+
+/* --- 临时占位内容 --- */
+.placeholder-text {
+    color: #6b6048;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+    border: 1px dashed #3e3428;
+    border-radius: 3px;
+}
+
+/* ============================================
+   EditableInventoryPanel — 可编辑背包样式
+   ============================================ */
+
+.editable-inventory-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 滚动区域：局部可滚动 */
+.edit-inv-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+}
+
+/* 此区域单独显示滚动条 */
+.edit-inv-scroll::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+}
+.edit-inv-scroll::-webkit-scrollbar-track {
+    background: #1a1612;
+}
+.edit-inv-scroll::-webkit-scrollbar-thumb {
+    background: #6b4423;
+    border-radius: 2px;
+}
+.edit-inv-scroll::-webkit-scrollbar-thumb:hover {
+    background: #8b6914;
+}
+
+/* 网格 */
+.editable-inventory-grid {
+    display: grid;
+    justify-content: center;
+    align-content: start;
+    padding-bottom: 8px;
+}
+
+/* 可编辑格子 */
+.edit-cell {
+    position: relative;
+    background-color: #1e1a14;
+    border: 1px solid #3e3428;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+    overflow: hidden;
+}
+
+.edit-cell.empty {
+    background-color: rgba(30, 26, 20, 0.5);
+    border-style: dashed;
+    border-color: #2e2820;
+}
+
+.edit-cell.empty:hover {
+    border-color: #4a7a2a;
+    background-color: rgba(40, 50, 20, 0.4);
+}
+
+.edit-cell.occupied {
+    border-color: #8b7a40;
+    box-shadow: inset 0 0 4px rgba(184,134,11,0.08);
+}
+
+.edit-cell.occupied:hover {
+    border-color: #b8860b;
+    background-color: rgba(40, 35, 15, 0.5);
+    box-shadow: inset 0 0 8px rgba(184, 134, 11, 0.25);
+}
+
+.edit-cell.occupied:active {
+    transform: scale(0.96);
+}
+
+/* 空格子加号 */
+.edit-cell-plus {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4a6a2a;
+    line-height: 1;
+    transition: color 0.15s;
+}
+.edit-cell.empty:hover .edit-cell-plus {
+    color: #7aaa3a;
+}
+
+/* 物品图标 */
+.edit-cell-icon {
+    width: 70%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #f0e6c8;
+    border-radius: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* 数量 */
+.edit-cell-qty {
+    position: absolute;
+    bottom: 1px;
+    right: 3px;
+    font-size: 10px;
+    color: #d4c8a8;
+    font-weight: bold;
+    text-shadow: 0 1px 2px #000;
+}
+
+/* 删除标记（更偏更大） */
+.edit-cell-delete {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #8b2500;
+    text-shadow: 0 0 3px #000;
+    opacity: 0.8;
+    transition: opacity 0.15s, color 0.15s;
+    cursor: pointer;
+    line-height: 1;
+}
+.edit-cell.occupied:hover .edit-cell-delete {
+    opacity: 1;
+    color: #cc3300;
+}
+
+/* 行添加区域 */
+.row-add-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px dashed #3e3428;
+    margin-top: 4px;
+}
+
+.row-add-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2b2218;
+    border: 2px solid #4a6a2a;
+    border-radius: 3px;
+    color: #7aaa3a;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.row-add-btn:hover {
+    border-color: #7aaa3a;
+    background-color: #3a3020;
+    color: #aadd5a;
+    box-shadow: 0 0 6px rgba(122, 170, 58, 0.2);
+}
+
+.row-add-btn:active {
+    transform: translateY(1px);
+}
+
+.row-add-label {
+    font-size: 11px;
+    color: #6b6048;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   AddItemPanel — 添加物品表单样式
+   ============================================ */
+
+.add-item-panel {
+    width: 380px;
+    height: auto;
+    min-height: 420px;
+    max-height: 80vh;
+}
+
+.add-item-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 8px 4px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-row label {
+    font-size: 12px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-row input {
+    background-color: #1e1a14;
+    border: 1px solid #4a3e2e;
+    border-radius: 3px;
+    padding: 8px 10px;
+    color: #d4c8a8;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-row input:focus {
+    border-color: #8b6914;
+    box-shadow: 0 0 4px rgba(139, 105, 20, 0.2);
+}
+
+.form-row input::placeholder {
+    color: #5a5040;
+}
+
+/* 四维属性横向排列 */
+.quad-inputs {
+    display: flex;
+    gap: 8px;
+}
+
+.quad-inputs input {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+}
+
+/* 按钮区域 */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 8px;
+    margin-top: auto;
+}
+
+/* ============================================
+   DistillerPanel — 基酒机面板样式
+   ============================================ */
+
+.distiller-panel {
+    width: 100%;
+    height: 100%;
+}
+
+.distiller-body {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+    padding: 8px 4px;
+}
+
+.dist-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+/* --- 左侧：桶形固体缓存 --- */
+
+.dist-barrel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.barrel-top {
+    width: 70px;
+    height: 10px;
+    background-color: #4a3e2e;
+    border: 2px solid #6b4423;
+    border-radius: 50% 50% 0 0;
+}
+
+.barrel-body {
+    width: 70px;
+    height: 100px;
+    background-color: #2e2820;
+    border-left: 2px solid #6b4423;
+    border-right: 2px solid #6b4423;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+}
+
+.barrel-body::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: rgba(107, 68, 35, 0.3);
+}
+
+.barrel-body::after {
+    content: '';
+    position: absolute;
+    top: 60%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: rgba(107, 68, 35, 0.3);
+}
+
+.barrel-label {
+    font-size: 10px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.barrel-count {
+    font-size: 16px;
+    color: #d4c8a8;
+    font-weight: bold;
+}
+
+.barrel-bottom {
+    width: 70px;
+    height: 10px;
+    background-color: #4a3e2e;
+    border: 2px solid #6b4423;
+    border-radius: 0 0 50% 50%;
+}
+
+/* --- 中间：控制区 --- */
+
+.dist-center-section {
+    justify-content: center;
+    gap: 20px;
+}
+
+.dist-machine-name {
+    font-family: 'Impact', 'Arial Black', 'SimHei', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #b8860b;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 16px;
+    border: 2px solid #6b4423;
+    border-radius: 3px;
+    background-color: #2b2218;
+}
+
+.dist-config-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.dist-config-row label {
+    font-size: 11px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.config-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.config-input {
+    width: 60px;
+    text-align: center;
+    background-color: #1e1a14;
+    border: 1px solid #4a3e2e;
+    border-radius: 3px;
+    padding: 6px 4px;
+    color: #d4c8a8;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 14px;
+    outline: none;
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.config-input:focus {
+    border-color: #8b6914;
+}
+
+.config-arrow {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2b2218;
+    border: 1px solid #6b4423;
+    border-radius: 2px;
+    color: #a09070;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.config-arrow:hover {
+    border-color: #b8860b;
+    color: #f0e6c8;
+}
+
+.config-arrow:active {
+    transform: translateY(1px);
+}
+
+.dist-run-btn {
+    padding: 10px 28px;
+    background-color: #2b2218;
+    border: 2px solid #6b4423;
+    border-radius: 3px;
+    color: #d4c8a8;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.dist-run-btn:hover {
+    border-color: #b8860b;
+    color: #f0e6c8;
+    box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+}
+
+.dist-run-btn:active {
+    transform: translateY(1px);
+    background-color: #1a1612;
+}
+
+/* --- 右侧：椭圆液体缓存 --- */
+
+.dist-can {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.can-body {
+    width: 80px;
+    height: 110px;
+    background-color: #2e2820;
+    border: 2px solid #6b4423;
+    border-radius: 40% 40% 45% 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    padding: 8px;
+}
+
+.can-label {
+    font-size: 10px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+.can-inner {
+    width: 50px;
+    height: 60px;
+    background-color: #1a1612;
+    border: 1px solid #3e3428;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.can-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background-color: rgba(184, 134, 11, 0.5);
+    transition: height 0.3s;
+}
+
+.can-info {
+    font-size: 10px;
+    color: #a09070;
+    font-family: 'Courier New', monospace;
+    z-index: 2;
+}
+
+/* --- 通用按钮组 --- */
+
+.dist-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.dist-btn {
+    padding: 5px 12px;
+    background-color: #2b2218;
+    border: 1px solid #6b4423;
+    border-radius: 2px;
+    color: #a09070;
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+}
+
+.dist-btn:hover {
+    border-color: #b8860b;
+    color: #f0e6c8;
+}
+
+.dist-btn:active {
+    transform: translateY(1px);
+}
+
+/* ============================================
+   TooltipManager — 悬浮提示框样式
+   ============================================ */
+
+.wasteland-tooltip {
+    background-color: #1e1a14;
+    border: 1px solid #6b4423;
+    border-radius: 3px;
+    padding: 8px 12px;
+    min-width: 140px;
+    max-width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    font-family: 'Courier New', 'SimSun', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    pointer-events: none;
+}
+
+.tooltip-header {
+    font-family: 'Impact', 'Arial Black', 'SimHei', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.tooltip-divider {
+    height: 1px;
+    background-color: #4a3e2e;
+    margin-bottom: 6px;
+}
+
+.tooltip-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 1px 0;
+}
+
+.tooltip-label {
+    color: #8b6914;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.tooltip-value {
+    color: #d4c8a8;
+    font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.tooltip-negative {
+    color: #e07050;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(224, 112, 80, 0.3);
+}
+
+/* ============================================
+   LiquidShellPanel — 液体容器壳面板样式
+   ============================================ */
+
+.liquid-shell-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.liquid-shell-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 4px 2px;
+}
+
+/* 此区域单独显示滚动条 */
+.liquid-shell-body::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+}
+.liquid-shell-body::-webkit-scrollbar-track {
+    background: #1a1612;
+}
+.liquid-shell-body::-webkit-scrollbar-thumb {
+    background: #6b4423;
+    border-radius: 2px;
+}
+.liquid-shell-body::-webkit-scrollbar-thumb:hover {
+    background: #8b6914;
+}
+
+/* 液体 tank 卡片 */
+.liquid-tank-card {
+    background-color: #1e1a14;
+    border: 1px solid #3e3428;
+    border-radius: 3px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.2s;
+}
+
+.liquid-tank-card:hover {
+    border-color: #5a4a30;
+}
+
+/* 信息行：名称 + 体积 */
+.tank-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.tank-name {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.tank-volume {
+    color: #a09070;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+}
+
+/* 进度条 */
+.tank-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background-color: #1a1612;
+    border: 1px solid #3e3428;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.tank-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease-out;
+    min-width: 2px;
+}
+
+/* 底部操作区 */
+.liquid-shell-footer {
+    flex-shrink: 0;
+    padding-top: 8px;
+    border-top: 1px dashed #3e3428;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-clear-all {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+/* ============================================
+   MixerPanel — 调酒机面板样式
+   ============================================ */
+
+.mixer-panel {
+    width: 100%;
+    height: 100%;
+}
+
+/* 平均四维显示 */
+.mixer-attrs {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    background-color: rgba(30, 26, 20, 0.5);
+    border: 1px solid #3e3428;
+    border-radius: 2px;
+    min-width: 60px;
+}
+
+.mixer-attr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    padding: 0 4px;
+}
+
+.mixer-attr-label {
+    color: #8b6914;
+    font-weight: bold;
+}
+
+.mixer-attr-row span:last-child {
+    color: #d4c8a8;
+    font-weight: bold;
+}
+
+/* 产品槽区域 */
+.mixer-product-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.mixer-product-label {
+    font-size: 10px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mixer-product-slot {
+    width: 48px;
+    height: 48px;
+    background-color: #1e1a14;
+    border: 1px solid #3e3428;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+    overflow: hidden;
+    position: relative;
+}
+
+.mixer-product-slot:hover {
+    border-color: #b8860b;
+    background-color: #2a2418;
+    box-shadow: inset 0 0 6px rgba(184, 134, 11, 0.15);
+}
+
+.mixer-product-slot:active {
+    transform: scale(0.96);
+}
+
+.mixer-product-slot.occupied {
+    border-color: #7a6a40;
+}
+
+.mixer-slot-empty {
+    font-size: 11px;
+    color: #5a5040;
+    font-family: 'Courier New', monospace;
+}
+
+/* 导入液体模态框 */
+.mixer-import-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.mixer-import-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mixer-import-panel {
+    position: relative;
+    background-color: #252019;
+    border: 2px solid #6b4423;
+    border-radius: 4px;
+    padding: 16px;
+    width: 320px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.mixer-import-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #6b4423;
+    font-family: 'Impact', 'Arial Black', 'SimHei', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #b8860b;
+}
+
+.mixer-import-close {
+    background: none;
+    border: none;
+    color: #a09070;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.mixer-import-close:hover {
+    color: #cc3300;
+}
+
+.mixer-import-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mixer-import-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background-color: #1e1a14;
+    border: 1px solid #3e3428;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    font-size: 12px;
+}
+
+.mixer-import-item:hover {
+    border-color: #6b4423;
+}
+
+.mixer-import-item input[type="radio"] {
+    accent-color: #8b6914;
+}
+
+.mixer-import-name {
+    font-weight: bold;
+    flex: 1;
+}
+
+.mixer-import-amount {
+    color: #a09070;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+}
+
+.mixer-import-volume-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed #3e3428;
+}
+
+.mixer-import-volume-row label {
+    font-size: 12px;
+    color: #8b6914;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mixer-import-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 4px;
+}
+
+/* --- 响应式保护 --- */
+@media (max-width: 900px) {
+    .panel-header { font-size: 12px; }
+    .machine-nav-btn { width: 24px; height: 24px; }
+    .inv-cell { width: 40px !important; height: 40px !important; }
+    .edit-cell { width: 40px !important; height: 40px !important; }
+    .add-item-panel { width: 90vw; }
+    .distiller-body { gap: 8px; }
+    .dist-machine-name { font-size: 14px; }
+    .barrel-body, .can-body { width: 60px; }
+    .can-inner { width: 40px; height: 50px; }
+}

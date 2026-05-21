@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasteland Console</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 扫描线装饰 -->
+    <div class="scanline"></div>
+
+    <div id="game-container">
+        <!-- 主内容区：三列版面 -->
+        <div id="main-area">
+            <!-- 左侧版面：仓库背包 -->
+            <div id="panel-left" class="panel">
+                <div class="corner-deco tl"></div>
+                <div class="corner-deco tr"></div>
+                <div class="corner-deco bl"></div>
+                <div class="corner-deco br"></div>
+            </div>
+
+            <!-- 中间版面：机器面板 -->
+            <div id="panel-center" class="panel">
+                <div class="corner-deco tl"></div>
+                <div class="corner-deco tr"></div>
+                <div class="corner-deco bl"></div>
+                <div class="corner-deco br"></div>
+            </div>
+
+            <!-- 右侧版面：预留空白 -->
+            <div id="panel-right" class="panel">
+                <div class="panel-header">
+                    <span>右侧功能板</span>
+                    <span class="status-light"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="placeholder-text">
+                        [ 右侧模块预留区 ]
+                    </div>
+                </div>
+                <div class="corner-deco tl"></div>
+                <div class="corner-deco tr"></div>
+                <div class="corner-deco bl"></div>
+                <div class="corner-deco br"></div>
+            </div>
+        </div>
+
+        <!-- 底部版面：日志面板 -->
+        <div id="panel-footer" class="panel">
+            <div class="corner-deco tl"></div>
+            <div class="corner-deco tr"></div>
+            <div class="corner-deco bl"></div>
+            <div class="corner-deco br"></div>
+        </div>
+    </div>
+
+    <!-- 添加物品二级面板 -->
+    <div id="add-item-overlay" class="submenu-overlay">
+        <div class="submenu-panel add-item-panel">
+            <div class="submenu-header">
+                <span class="submenu-title">◆ 添加物品 ◆</span>
+                <button id="btn-add-item-close" class="submenu-close">&times;</button>
+            </div>
+            <div class="add-item-form">
+                <div class="form-row">
+                    <label>ID</label>
+                    <input type="text" id="input-item-id" placeholder="留空随机生成">
+                </div>
+                <div class="form-row">
+                    <label>名称</label>
+                    <input type="text" id="input-item-name" placeholder="留空随机生成">
+                </div>
+                <div class="form-row quad">
+                    <label>四维属性 A / B / C / D</label>
+                    <div class="quad-inputs">
+                        <input type="number" id="input-item-a" placeholder="A" min="-3" max="3">
+                        <input type="number" id="input-item-b" placeholder="B" min="-3" max="3">
+                        <input type="number" id="input-item-c" placeholder="C" min="-3" max="3">
+                        <input type="number" id="input-item-d" placeholder="D" min="-3" max="3">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>价值</label>
+                    <input type="number" id="input-item-value" placeholder="留空随机" min="0">
+                </div>
+                <div class="form-actions">
+                    <button id="btn-add-item-confirm" class="btn-wasteland">确认</button>
+                    <button id="btn-add-item-cancel" class="btn-wasteland">取消</button>
+                </div>
+            </div>
+            <div class="corner-deco tl"></div>
+            <div class="corner-deco tr"></div>
+            <div class="corner-deco bl"></div>
+            <div class="corner-deco br"></div>
+        </div>
+    </div>
+
+    <!-- 二级菜单覆盖层（保留） -->
+    <div id="submenu-overlay" class="submenu-overlay">
+        <div class="submenu-panel">
+            <div class="submenu-header">
+                <span class="submenu-title">◆ 二级功能版面 ◆</span>
+                <button id="btn-submenu-close" class="submenu-close">&times;</button>
+            </div>
+            <div class="submenu-body">
+                <div class="placeholder-text" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                    [ 二级菜单内容预留区 ]
+                </div>
+            </div>
+            <div class="corner-deco tl"></div>
+            <div class="corner-deco tr"></div>
+            <div class="corner-deco bl"></div>
+            <div class="corner-deco br"></div>
+        </div>
+    </div>
+
+    <!-- ===== 数据层 ===== -->
+    <!-- 配置 -->
+    <script src="js/data/config/materials.js"></script>
+    <script src="js/data/config/containers.js"></script>
+    <!-- 核心 -->
+    <script src="js/data/core/Material.js"></script>
+    <script src="js/data/containers/GridInventory.js"></script>
+    <script src="js/data/containers/ExpandableGridInventory.js"></script>
+    <script src="js/data/containers/LiquidTank.js"></script>
+    <script src="js/data/containers/LiquidContainerShell.js"></script>
+    <script src="js/data/core/GameData.js"></script>
+    <!-- 系统 -->
+    <script src="js/data/systems/Warehouse.js"></script>
+    <script src="js/data/systems/Machine.js"></script>
+    <script src="js/data/systems/BlankMachine.js"></script>
+    <script src="js/data/systems/Distiller.js"></script>
+    <script src="js/data/systems/Mixer.js"></script>
+
+    <!-- ===== 表现层 ===== -->
+    <script src="js/ui/TooltipManager.js"></script>
+    <script src="js/ui/panels/LogPanel.js"></script>
+    <script src="js/ui/panels/InventoryPanel.js"></script>
+    <script src="js/ui/panels/EditableInventoryPanel.js"></script>
+    <script src="js/ui/panels/MachinePanel.js"></script>
+    <script src="js/ui/panels/BlankPanel.js"></script>
+    <script src="js/ui/panels/DistillerPanel.js"></script>
+    <script src="js/ui/panels/MixerPanel.js"></script>
+    <script src="js/ui/panels/LiquidShellPanel.js"></script>
+    <script src="js/ui/UIManager.js"></script>
+
+    <!-- 旧系统保留但不再初始化 -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
