@@ -20,9 +20,6 @@ class GameData {
         this._machines.push(new Mixer('MIX_01', '调酒机'));
         this._machines.push(new BlankMachine('BLANK_01', '空白机器'));
         this._machines[0].isActive = true;
-
-        // 放入一个默认物品到仓库
-        this._warehouse.add('MAT_A');
     }
 
     get warehouse() { return this._warehouse; }
