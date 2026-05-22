@@ -22,14 +22,15 @@ class Material {
             this.shape = null;
         }
 
-        // 四维属性 — 固有，创建后不可修改
-        this.A = config.A ?? Math.floor(Math.random() * 7) - 3;
-        this.B = config.B ?? Math.floor(Math.random() * 7) - 3;
-        this.C = config.C ?? Math.floor(Math.random() * 7) - 3;
-        this.D = config.D ?? Math.floor(Math.random() * 7) - 3;
+            // 四维属性 — 固有，创建后不可修改
+        const attrs = Material.randomAttrs();
+        this.A = config.A ?? attrs.A;
+        this.B = config.B ?? attrs.B;
+        this.C = config.C ?? attrs.C;
+        this.D = config.D ?? attrs.D;
 
         // 价值属性
-        this.value = config.value ?? 10;
+        this.value = config.value ?? Material.randomValue();
     }
 
     isSolid() {
@@ -62,6 +63,78 @@ class Material {
 
     static getDef(materialId) {
         return MaterialConfig.get(materialId);
+    }
+
+    // --- 随机生成静态方法 ---
+
+    static randomId(prefix = 'MAT_') {
+        return prefix + Math.random().toString(36).slice(2, 8).toUpperCase();
+    }
+
+    static randomName(style = 'wasteland') {
+        if (style === 'wasteland') {
+            const prefixes = ['锈迹', '破损', '老旧', '废弃', '残破', '扭曲', '烧焦', '腐蚀', '碎裂', '变形', '锈蚀'];
+            const types = ['零件', '金属片', '齿轮', '螺丝', '电路', '管道', '板材', '线圈', '容器', '工具', '轴承', '阀门'];
+            const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const t = types[Math.floor(Math.random() * types.length)];
+            const n = Math.floor(Math.random() * 900) + 100;
+            return `${p}${t}-${n}`;
+        }
+        if (style === 'liquor') {
+            const prefixes = ['烈', '陈', '苦', '甘', '浊', '醇', '酸', '香'];
+            const suffixes = ['酿', '酒', '露', '液', '浆', '饮', '泉', '醇'];
+            const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const s = suffixes[Math.floor(Math.random() * suffixes.length)];
+            const n = Math.floor(Math.random() * 90) + 10;
+            return `${p}${s}-${n}`;
+        }
+        return '未命名-' + Math.floor(Math.random() * 1000);
+    }
+
+    static randomAttrs() {
+        const rand = () => Math.floor(Math.random() * 7) - 3;
+        return { A: rand(), B: rand(), C: rand(), D: rand() };
+    }
+
+    static randomValue(min = 10, max = 59) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    static randomColor(palette = 'wasteland') {
+        if (palette === 'wasteland') {
+            const colors = ['#8b8680', '#6b6050', '#5a5a3a', '#4a5a6a', '#6a4a5a', '#5a6a4a', '#7a6a4a', '#4a7a6a'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        if (palette === 'liquor') {
+            const colors = ['#c8a848', '#a87040', '#8b4040', '#6a8b40', '#408b6a', '#406a8b', '#6a408b', '#8b6a40'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        return '#888';
+    }
+
+    // 生成完整材料定义对象
+    static generateDef(options = {}) {
+        const state = options.state || 'solid';
+        const id = options.id || Material.randomId(options.idPrefix || (state === 'liquid' ? 'LIQ_' : 'MAT_'));
+        const name = options.name || Material.randomName(options.nameStyle || (state === 'liquid' ? 'liquor' : 'wasteland'));
+        const attrs = options.attrs || Material.randomAttrs();
+        const value = options.value ?? Material.randomValue(options.valueMin, options.valueMax);
+        const color = options.color || Material.randomColor(options.colorPalette || (state === 'liquid' ? 'liquor' : 'wasteland'));
+
+        const def = {
+            id,
+            name,
+            description: options.description || '',
+            category: options.category || (state === 'liquid' ? 'base_liquor' : 'trash'),
+            state,
+            A: attrs.A, B: attrs.B, C: attrs.C, D: attrs.D,
+            value,
+            color
+        };
+        if (state === 'solid') {
+            def.shape = options.shape || { w: 1, h: 1 };
+        }
+        return def;
     }
 }
 

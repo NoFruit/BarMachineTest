@@ -97,19 +97,12 @@ const MaterialConfig = {
         return Object.values(this.definitions).filter(m => m.state === 'liquid');
     },
 
-    // 随机名字生成词库
-    _namePrefixes: ['锈迹', '破损', '老旧', '废弃', '残破', '扭曲', '烧焦', '腐蚀', '碎裂', '变形', '锈蚀', '废弃'],
-    _nameTypes:   ['零件', '金属片', '齿轮', '螺丝', '电路', '管道', '板材', '线圈', '容器', '工具', '轴承', '阀门'],
-
     generateRandomName() {
-        const p = this._namePrefixes[Math.floor(Math.random() * this._namePrefixes.length)];
-        const t = this._nameTypes[Math.floor(Math.random() * this._nameTypes.length)];
-        const n = Math.floor(Math.random() * 900) + 100;
-        return `${p}${t}-${n}`;
+        return Material.randomName('wasteland');
     },
 
     generateRandomId() {
-        return 'MAT_' + Math.random().toString(36).slice(2, 8).toUpperCase();
+        return Material.randomId('MAT_');
     }
 };
 

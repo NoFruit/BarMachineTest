@@ -425,16 +425,17 @@ class UIManager {
 
         const id = idInput || MaterialConfig.generateRandomId();
         const name = nameInput || MaterialConfig.generateRandomName();
-        const A = a !== '' ? parseInt(a, 10) : Math.floor(Math.random() * 7) - 3;
-        const B = b !== '' ? parseInt(b, 10) : Math.floor(Math.random() * 7) - 3;
-        const C = c !== '' ? parseInt(c, 10) : Math.floor(Math.random() * 7) - 3;
-        const D = d !== '' ? parseInt(d, 10) : Math.floor(Math.random() * 7) - 3;
-        const value = val !== '' ? parseInt(val, 10) : Math.floor(Math.random() * 50) + 10;
+        const attrs = Material.randomAttrs();
+        const A = a !== '' ? parseInt(a, 10) : attrs.A;
+        const B = b !== '' ? parseInt(b, 10) : attrs.B;
+        const C = c !== '' ? parseInt(c, 10) : attrs.C;
+        const D = d !== '' ? parseInt(d, 10) : attrs.D;
+        const value = val !== '' ? parseInt(val, 10) : Material.randomValue(10, 59);
 
         MaterialConfig.set(id, {
             id, name, description: '', category: 'trash', state: 'solid',
             shape: { w: 1, h: 1 }, A, B, C, D, value,
-            color: this._randomColor()
+            color: Material.randomColor('wasteland')
         });
 
         const warehouse = this._gameData.warehouse;
@@ -447,11 +448,6 @@ class UIManager {
         this.log(`添加物品: ${name} [A${A} B${B} C${C} D${D}] 价值:${value} — 位置 [${this._addItemTargetX}, ${this._addItemTargetY}]`);
         this._inventoryPanel.refresh();
         this._closeAddItemPanel();
-    }
-
-    _randomColor() {
-        const colors = ['#8b8680', '#6b6050', '#5a5a3a', '#4a5a6a', '#6a4a5a', '#5a6a4a', '#7a6a4a', '#4a7a6a'];
-        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     _logMachineSwitch() {

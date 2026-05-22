@@ -11,9 +11,6 @@ class Mixer extends Machine {
         super(id, name, 'mixer');
         this._productLiquidBuffer = new LiquidTank(Infinity);
 
-        // 随机酒名词库
-        this._prefixes = ['烈', '陈', '苦', '甘', '浊', '醇', '酸', '香'];
-        this._suffixes = ['酿', '酒', '露', '液', '浆', '饮', '泉', '醇'];
     }
 
     get productLiquidBuffer() { return this._productLiquidBuffer; }
@@ -131,9 +128,9 @@ class Mixer extends Machine {
         const productVolume = liquidContent.volume;
 
         // 生成新产品
-        const productId = 'LIQ_PROD_' + Math.random().toString(36).slice(2, 8).toUpperCase();
-        const productName = this._generateProductName();
-        const productValue = Math.floor(Math.random() * 100) + 20;
+        const productId = Material.randomId('LIQ_PROD_');
+        const productName = Material.randomName('liquor');
+        const productValue = Material.randomValue(20, 119);
 
         MaterialConfig.set(productId, {
             id: productId,
@@ -144,7 +141,7 @@ class Mixer extends Machine {
             shape: { w: 1, h: 1 },
             A: newA, B: newB, C: newC, D: newD,
             value: productValue,
-            color: this._randomColor()
+            color: Material.randomColor('liquor')
         });
 
         // 放入产物液体缓存
@@ -189,20 +186,6 @@ class Mixer extends Machine {
             } : null,
             productVolume: productContent ? productContent.volume : 0
         };
-    }
-
-    // --- 内部 ---
-
-    _generateProductName() {
-        const p = this._prefixes[Math.floor(Math.random() * this._prefixes.length)];
-        const s = this._suffixes[Math.floor(Math.random() * this._suffixes.length)];
-        const n = Math.floor(Math.random() * 90) + 10;
-        return `${p}${s}-${n}`;
-    }
-
-    _randomColor() {
-        const colors = ['#c8a848', '#a87040', '#8b4040', '#6a8b40', '#408b6a', '#406a8b', '#6a408b', '#8b6a40'];
-        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     // --- 序列化 ---
