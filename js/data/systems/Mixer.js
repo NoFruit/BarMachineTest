@@ -127,25 +127,17 @@ class Mixer extends Machine {
         // 产物体积 = 输入基酒体积
         const productVolume = liquidContent.volume;
 
-        // 生成新产品
-        const productId = Material.randomId('LIQ_PROD_');
-        const productName = Material.randomName('liquor');
-        const productValue = Material.randomValue(20, 119);
-
-        MaterialConfig.set(productId, {
-            id: productId,
-            name: productName,
-            description: '由调酒机酿造的特殊酒品。',
-            category: 'product',
+        // 生成新产品（确定性 ID + 名称）
+        const productDef = Material.generateDef({
             state: 'liquid',
-            shape: { w: 1, h: 1 },
-            A: newA, B: newB, C: newC, D: newD,
-            value: productValue,
-            color: Material.randomColor('liquor')
+            category: 'product',
+            attrs: { A: newA, B: newB, C: newC, D: newD },
+            value: Material.randomValue(20, 119)
         });
+        MaterialConfig.set(productDef.id, productDef);
 
         // 放入产物液体缓存
-        this._productLiquidBuffer.pourIn(productId, productVolume);
+        this._productLiquidBuffer.pourIn(productDef.id, productVolume);
 
         // 消耗原料：清空固体和液体缓存
         this._solidBuffer.clear();
@@ -153,12 +145,12 @@ class Mixer extends Machine {
 
         return {
             success: true,
-            productId,
-            productName,
-            value: productValue,
+            productId: productDef.id,
+            productName: productDef.name,
+            value: productDef.value,
             volume: productVolume,
             attrs: { A: newA, B: newB, C: newC, D: newD },
-            msg: `调酒机运行完成，产出 [${productName}] 价值:${productValue} 体积:${productVolume.toFixed(1)} [A${newA} B${newB} C${newC} D${newD}]`
+            msg: `调酒机运行完成，产出 [${productDef.name}] 价值:${productDef.value} 体积:${productVolume.toFixed(1)} [A${newA} B${newB} C${newC} D${newD}]`
         };
     }
 

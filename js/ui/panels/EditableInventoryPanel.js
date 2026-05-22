@@ -93,6 +93,7 @@ class EditableInventoryPanel {
                     title: def.name,
                     color: def.color || '#d4c8a8',
                     lines: [
+                        { label: '稀有度', value: `R${def.rarity ?? 1}` },
                         { label: '四维', value: `A:${def.A} B:${def.B} C:${def.C} D:${def.D}` },
                         { label: '价值', value: def.value },
                         { label: '状态', value: def.state === 'solid' ? '固体' : '液体' }

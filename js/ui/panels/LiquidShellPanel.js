@@ -86,6 +86,7 @@ class LiquidShellPanel {
                     { label: '占比', value: `${(tank.fillRatio * 100).toFixed(1)}%` }
                 ];
                 if (mat) {
+                    lines.push({ label: '稀有度', value: `R${mat.rarity ?? 1}` });
                     lines.push({ label: '四维', value: `A:${mat.A} B:${mat.B} C:${mat.C} D:${mat.D}` });
                     lines.push({ label: '价值', value: mat.value });
                 }

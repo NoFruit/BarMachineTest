@@ -423,29 +423,33 @@ class UIManager {
         const d = document.getElementById('input-item-d').value;
         const val = document.getElementById('input-item-value').value;
 
-        const id = idInput || MaterialConfig.generateRandomId();
-        const name = nameInput || MaterialConfig.generateRandomName();
-        const attrs = Material.randomAttrs();
-        const A = a !== '' ? parseInt(a, 10) : attrs.A;
-        const B = b !== '' ? parseInt(b, 10) : attrs.B;
-        const C = c !== '' ? parseInt(c, 10) : attrs.C;
-        const D = d !== '' ? parseInt(d, 10) : attrs.D;
-        const value = val !== '' ? parseInt(val, 10) : Material.randomValue(10, 59);
+        const hasAttrs = a !== '' || b !== '' || c !== '' || d !== '';
+        const attrs = hasAttrs ? {
+            A: a !== '' ? parseInt(a, 10) : 0,
+            B: b !== '' ? parseInt(b, 10) : 0,
+            C: c !== '' ? parseInt(c, 10) : 0,
+            D: d !== '' ? parseInt(d, 10) : 0
+        } : undefined;
+        const value = val !== '' ? parseInt(val, 10) : undefined;
 
-        MaterialConfig.set(id, {
-            id, name, description: '', category: 'trash', state: 'solid',
-            shape: { w: 1, h: 1 }, A, B, C, D, value,
-            color: Material.randomColor('wasteland')
+        const def = Material.generateDef({
+            state: 'solid',
+            category: 'trash',
+            attrs,
+            value,
+            id: idInput || undefined,
+            name: nameInput || undefined
         });
+        MaterialConfig.set(def.id, def);
 
         const warehouse = this._gameData.warehouse;
         if (this._addItemTargetX !== null && this._addItemTargetY !== null) {
-            warehouse.addAt(this._addItemTargetX, this._addItemTargetY, id);
+            warehouse.addAt(this._addItemTargetX, this._addItemTargetY, def.id);
         } else {
-            warehouse.add(id);
+            warehouse.add(def.id);
         }
 
-        this.log(`添加物品: ${name} [A${A} B${B} C${C} D${D}] 价值:${value} — 位置 [${this._addItemTargetX}, ${this._addItemTargetY}]`);
+        this.log(`添加物品: ${def.name} [R${def.rarity}] [A${def.A} B${def.B} C${def.C} D${def.D}] 价值:${def.value} — 位置 [${this._addItemTargetX}, ${this._addItemTargetY}]`);
         this._inventoryPanel.refresh();
         this._closeAddItemPanel();
     }
